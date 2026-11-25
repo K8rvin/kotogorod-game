@@ -1,0 +1,78 @@
+{
+  "id": "cats-sheet-2",
+  "promptVersion": 1,
+  "prompt": "Create a character sprite sheet for a premium cozy cat merge game: exactly six full-body anthropomorphic cats arranged 3 columns by 2 rows on a pure solid white background. Each cat sits upright centered in its own cell, entire ears, tails and paws visible, generous empty gaps, no touching, no grid lines, no text, no logos, no props outside the character. Consistent soft rounded hand-painted 3D family-animation aesthetic, expressive eyes, subtle detailed fur, warm rim light. Left to right, top row: 1 Myurts the elderly white archivist cat with round navy glasses and a small blue waistcoat, 2 Sonya the warm brown hotel keeper cat with a dusty-pink bow and a cozy shawl, 3 Polar the fluffy white astronomer cat with a blue knitted scarf and tiny star-shaped pendant. Left to right, bottom row: 4 Smoke the gray railway conductor cat with a navy cap and golden pocket watch, 5 Raduga the peach artist cat with a rose beret and a colorful paint-splashed apron, 6 Luna the mysterious midnight-black keeper of the lighthouse with a pale-violet star cape and crescent hairpin. Distinct personalities, exactly six cats, no other animals, no floor, no cast shadows, no border.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\cats-sheet-2.jfif",
+  "createdAt": "2026-11-24T23:18:21.142Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1264,
+    848
+  ],
+  "processing": "equal-cell crop, edge-connected background removal, components above 80 pixels retained, premultiplied-alpha resize",
+  "outputs": [
+    {
+      "output": "assets\\resources\\textures\\cats\\myurts.png",
+      "cell": [
+        0,
+        0,
+        421,
+        424
+      ],
+      "foregroundArea": 47656
+    },
+    {
+      "output": "assets\\resources\\textures\\cats\\sonya.png",
+      "cell": [
+        421,
+        0,
+        843,
+        424
+      ],
+      "foregroundArea": 52154
+    },
+    {
+      "output": "assets\\resources\\textures\\cats\\polar.png",
+      "cell": [
+        843,
+        0,
+        1264,
+        424
+      ],
+      "foregroundArea": 59726
+    },
+    {
+      "output": "assets\\resources\\textures\\cats\\smoke.png",
+      "cell": [
+        0,
+        424,
+        421,
+        848
+      ],
+      "foregroundArea": 52149
+    },
+    {
+      "output": "assets\\resources\\textures\\cats\\raduga.png",
+      "cell": [
+        421,
+        424,
+        843,
+        848
+      ],
+      "foregroundArea": 51085
+    },
+    {
+      "output": "assets\\resources\\textures\\cats\\luna.png",
+      "cell": [
+        843,
+        424,
+        1264,
+        848
+      ],
+      "foregroundArea": 50989
+    }
+  ]
+}

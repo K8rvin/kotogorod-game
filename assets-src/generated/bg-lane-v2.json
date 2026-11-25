@@ -1,0 +1,23 @@
+{
+  "id": "bg-lane-v2",
+  "promptVersion": 1,
+  "prompt": "Paint one continuous full-bleed landscape environment for a premium cozy merge game. A rainy old European alley at blue hour, wet cobblestones reflecting warm lanterns, a tiny weathered wooden house on the left with a cardboard box under its awning, stone steps and plants, distant crooked rooftops. An open walkway on the right leaves visual space for a game character added later. Soft rounded hand-painted 3D casual-game aesthetic, beautiful cold blue rain contrasted with amber windows, hopeful cozy atmosphere, crisp readable detail. The entire canvas must be covered edge-to-edge by the painted alley. Environment only: absolutely no animals, no cats, no people, no user interface, no gray rectangle, no placeholder panel, no dark overlay, no text, no letters, no logos, no borders, no frames.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\bg-lane-v2.jfif",
+  "createdAt": "2026-11-24T22:57:27.374Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1376,
+    768
+  ],
+  "processed": "C:\\Projects\\YandexGames\\simple\\assets\\resources\\textures\\backgrounds\\bg-lane.jpg",
+  "processedSize": [
+    1380,
+    560
+  ],
+  "processing": "composition crop (0, 88, 1376, 646), Lanczos resize, progressive JPEG quality 91",
+  "accepted": true,
+  "visualCheck": "Accepted full-bleed scene; no unintended characters, placeholders, text, or border."
+}

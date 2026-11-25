@@ -1,0 +1,98 @@
+{
+  "id": "cozy-sheet",
+  "promptVersion": 1,
+  "prompt": "Create a sprite sheet for a premium cozy merge game, 4 columns by 2 rows, eight separate objects on a pure solid white background. Each object is centered inside its own equal square cell, with large empty gaps, no touching, no grid lines, no numbers, no letters, no text. Consistent three-quarter view, soft rounded hand-painted 3D casual-game aesthetic, warm light, rich colors, crisp silhouettes. Left to right, top row: 1 a raspberry ball of yarn with loose thread, 2 a small gray plush mouse toy with pink ears, 3 a sky-blue ceramic bowl filled with warm milk, 4 a plush round pink cat bed with golden cushion. Left to right, bottom row: 5 a tiny warm wooden cat house with glowing windows, 6 an elaborate cat climbing tower with platforms and toys, 7 a charming two-story cat mansion with many golden windows and a garden, 8 an open wicker basket full of colorful yarn balls, used as an item generator. All eight objects fully visible and isolated from one another on white, no cats, no people, no floor, no border.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\cozy-sheet.jfif",
+  "createdAt": "2026-11-24T22:53:43.439Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1200,
+    896
+  ],
+  "processing": "equal-cell crop, edge-connected background removal, components above 80 pixels retained, premultiplied-alpha resize",
+  "outputs": [
+    {
+      "output": "assets\\resources\\textures\\items\\cozy-1.png",
+      "cell": [
+        0,
+        0,
+        300,
+        448
+      ],
+      "foregroundArea": 17035
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\cozy-2.png",
+      "cell": [
+        300,
+        0,
+        600,
+        448
+      ],
+      "foregroundArea": 13649
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\cozy-3.png",
+      "cell": [
+        600,
+        0,
+        900,
+        448
+      ],
+      "foregroundArea": 17480
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\cozy-4.png",
+      "cell": [
+        900,
+        0,
+        1200,
+        448
+      ],
+      "foregroundArea": 27751
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\cozy-5.png",
+      "cell": [
+        0,
+        448,
+        300,
+        896
+      ],
+      "foregroundArea": 26222
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\cozy-6.png",
+      "cell": [
+        300,
+        448,
+        600,
+        896
+      ],
+      "foregroundArea": 30405
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\cozy-7.png",
+      "cell": [
+        600,
+        448,
+        900,
+        896
+      ],
+      "foregroundArea": 40838
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\cozy-8.png",
+      "cell": [
+        900,
+        448,
+        1200,
+        896
+      ],
+      "foregroundArea": 29152
+    }
+  ]
+}

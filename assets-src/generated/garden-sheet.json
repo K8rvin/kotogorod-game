@@ -1,0 +1,98 @@
+{
+  "id": "garden-sheet",
+  "promptVersion": 1,
+  "prompt": "Create a sprite sheet for a premium cozy merge game, 4 columns by 2 rows, eight separate objects on a pure solid white background. One object centered per equal square cell, generous gaps, no touching, no grid lines, no text, no numbers. Consistent three-quarter view, soft rounded hand-painted 3D casual-game aesthetic, warm light, crisp silhouettes. Left to right, top row: 1 a single striped seed with a tiny leaf, 2 a tender green sprout in a small mound of soil, 3 a pink flower with a golden center, 4 a lush fragrant bush with small blossoms. Left to right, bottom row: 5 a small apple tree with red apples, 6 a charming wooden gazebo covered in flowering vines, 7 a magical lush greenhouse garden with glass panels and many flowers, 8 a terracotta planter box full of seedlings and gardening tools, used as an item generator. All objects fully visible and isolated on white, no cats, no people, no floor, no border.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\garden-sheet.jfif",
+  "createdAt": "2026-11-24T23:09:20.091Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1376,
+    768
+  ],
+  "processing": "equal-cell crop, edge-connected background removal, components above 80 pixels retained, premultiplied-alpha resize",
+  "outputs": [
+    {
+      "output": "assets\\resources\\textures\\items\\garden-1.png",
+      "cell": [
+        65,
+        65,
+        279,
+        319
+      ],
+      "foregroundArea": 8623
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\garden-2.png",
+      "cell": [
+        409,
+        65,
+        623,
+        319
+      ],
+      "foregroundArea": 12993
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\garden-3.png",
+      "cell": [
+        753,
+        65,
+        967,
+        319
+      ],
+      "foregroundArea": 19461
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\garden-4.png",
+      "cell": [
+        1097,
+        65,
+        1311,
+        319
+      ],
+      "foregroundArea": 25070
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\garden-5.png",
+      "cell": [
+        45,
+        429,
+        299,
+        723
+      ],
+      "foregroundArea": 23424
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\garden-6.png",
+      "cell": [
+        389,
+        429,
+        643,
+        723
+      ],
+      "foregroundArea": 29587
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\garden-7.png",
+      "cell": [
+        733,
+        429,
+        987,
+        723
+      ],
+      "foregroundArea": 36906
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\garden-8.png",
+      "cell": [
+        1077,
+        429,
+        1331,
+        723
+      ],
+      "foregroundArea": 21014
+    }
+  ]
+}

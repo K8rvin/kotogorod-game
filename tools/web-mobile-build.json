@@ -1,0 +1,23 @@
+{
+  "platform": "web-mobile",
+  "debug": false,
+  "buildPath": "project://build",
+  "outputName": "web-mobile-current",
+  "includedModules": [
+    "2d",
+    "affine-transform",
+    "animation",
+    "audio",
+    "base",
+    "custom-pipeline",
+    "custom-pipeline-builtin-scripts",
+    "gfx-webgl",
+    "graphics",
+    "intersection-2d",
+    "mask",
+    "particle-2d",
+    "tween",
+    "ui",
+    "ui-skew"
+  ]
+}

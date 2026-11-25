@@ -1,0 +1,23 @@
+{
+  "id": "bg-archive",
+  "promptVersion": 1,
+  "prompt": "Paint one continuous full-bleed landscape environment for a premium cozy cat merge game. An ancient cozy city library archive at night, towering wooden bookshelves, rolling ladder, large reading table, fireplace, soft green lamps, floating dust motes, old scrolls and rain on tall windows. Hand-painted rounded 3D casual-game aesthetic, navy shadows and honey-gold light, mysterious but welcoming. Entire canvas painted edge-to-edge, no animals, no people, no UI, no placeholder panels, no text, no readable letters, no logos, no borders.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\bg-archive.jfif",
+  "createdAt": "2026-11-24T23:27:38.806Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1376,
+    768
+  ],
+  "processed": "C:\\Projects\\YandexGames\\simple\\assets\\resources\\textures\\backgrounds\\bg-archive.jpg",
+  "processedSize": [
+    1380,
+    560
+  ],
+  "processing": "composition crop (0, 88, 1376, 646), Lanczos resize, progressive JPEG quality 91",
+  "accepted": true,
+  "visualCheck": "Accepted full-bleed scene; no unintended characters, placeholders, text, or border."
+}

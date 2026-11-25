@@ -1,0 +1,98 @@
+{
+  "id": "music-sheet",
+  "promptVersion": 1,
+  "prompt": "Create a sprite sheet for a premium cozy merge game, 4 columns by 2 rows, eight separate objects on a pure solid white background. One object centered per equal square cell, generous gaps, no touching, no grid lines, no letters, no numbers, no text. Consistent three-quarter view, soft rounded hand-painted 3D casual-game aesthetic, warm light, crisp silhouettes. Left to right, top row: 1 a single glowing violet musical note, 2 a golden hand bell, 3 a warm wooden violin with bow, 4 a festive red hand drum with two drumsticks. Left to right, bottom row: 5 a miniature dark-wood upright piano, 6 an antique gramophone with a golden horn, 7 a charming little music hall with glowing windows and musical decoration without letters, 8 an open instrument case containing a small violin and bells, used as an item generator. All objects fully visible and isolated on white, no cats, no people, no floor, no border.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\music-sheet.jfif",
+  "createdAt": "2026-11-24T23:15:39.917Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1376,
+    768
+  ],
+  "processing": "equal-cell crop, edge-connected background removal, components above 80 pixels retained, premultiplied-alpha resize",
+  "outputs": [
+    {
+      "output": "assets\\resources\\textures\\items\\music-1.png",
+      "cell": [
+        50,
+        50,
+        294,
+        334
+      ],
+      "foregroundArea": 19727
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\music-2.png",
+      "cell": [
+        394,
+        50,
+        638,
+        334
+      ],
+      "foregroundArea": 15456
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\music-3.png",
+      "cell": [
+        738,
+        50,
+        982,
+        334
+      ],
+      "foregroundArea": 23317
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\music-4.png",
+      "cell": [
+        1082,
+        50,
+        1326,
+        334
+      ],
+      "foregroundArea": 29288
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\music-5.png",
+      "cell": [
+        50,
+        434,
+        294,
+        718
+      ],
+      "foregroundArea": 36114
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\music-6.png",
+      "cell": [
+        394,
+        434,
+        638,
+        718
+      ],
+      "foregroundArea": 31563
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\music-7.png",
+      "cell": [
+        738,
+        434,
+        982,
+        718
+      ],
+      "foregroundArea": 40322
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\music-8.png",
+      "cell": [
+        1082,
+        434,
+        1326,
+        718
+      ],
+      "foregroundArea": 35303
+    }
+  ]
+}

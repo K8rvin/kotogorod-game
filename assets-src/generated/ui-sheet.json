@@ -1,0 +1,98 @@
+{
+  "id": "ui-sheet",
+  "promptVersion": 1,
+  "prompt": "Create a cohesive set of eight game UI icons for a premium cozy cat merge game, arranged 4 columns by 2 rows on a pure solid white background. One icon per equal square cell, centered with generous gaps, no grid lines, no letters, no numbers, no text. Soft rounded hand-painted 3D casual-game style, warm golden highlights, clean bold silhouettes readable at small size. Left to right, top row: a golden lightning bolt for energy, a warm five-pointed star, a round golden coin with a simple paw embossing, a turquoise diamond-shaped district key. Left to right, bottom row: a small wooden treasure chest with golden trim, a cozy house with a glowing window for the city map, four sparkling stars for game modes, a friendly cat face for residents. No other objects, no borders, no background decoration.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\ui-sheet.jfif",
+  "createdAt": "2026-11-24T23:03:23.421Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1408,
+    768
+  ],
+  "processing": "equal-cell crop, edge-connected background removal, components above 80 pixels retained, premultiplied-alpha resize",
+  "outputs": [
+    {
+      "output": "assets\\resources\\textures\\ui\\ui-1.png",
+      "cell": [
+        0,
+        0,
+        352,
+        384
+      ],
+      "foregroundArea": 14041
+    },
+    {
+      "output": "assets\\resources\\textures\\ui\\ui-2.png",
+      "cell": [
+        352,
+        0,
+        704,
+        384
+      ],
+      "foregroundArea": 20744
+    },
+    {
+      "output": "assets\\resources\\textures\\ui\\ui-3.png",
+      "cell": [
+        704,
+        0,
+        1056,
+        384
+      ],
+      "foregroundArea": 29147
+    },
+    {
+      "output": "assets\\resources\\textures\\ui\\ui-4.png",
+      "cell": [
+        1056,
+        0,
+        1408,
+        384
+      ],
+      "foregroundArea": 16183
+    },
+    {
+      "output": "assets\\resources\\textures\\ui\\ui-5.png",
+      "cell": [
+        0,
+        384,
+        352,
+        768
+      ],
+      "foregroundArea": 27919
+    },
+    {
+      "output": "assets\\resources\\textures\\ui\\ui-6.png",
+      "cell": [
+        352,
+        384,
+        704,
+        768
+      ],
+      "foregroundArea": 28917
+    },
+    {
+      "output": "assets\\resources\\textures\\ui\\ui-7.png",
+      "cell": [
+        704,
+        384,
+        1056,
+        768
+      ],
+      "foregroundArea": 11630
+    },
+    {
+      "output": "assets\\resources\\textures\\ui\\ui-8.png",
+      "cell": [
+        1056,
+        384,
+        1408,
+        768
+      ],
+      "foregroundArea": 29854
+    }
+  ]
+}

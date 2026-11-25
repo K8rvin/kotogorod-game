@@ -1,0 +1,98 @@
+{
+  "id": "food-sheet",
+  "promptVersion": 1,
+  "prompt": "Create a sprite sheet for a premium cozy merge game, 4 columns by 2 rows, eight separate objects on a pure solid white background. Each object centered in its own equal square cell, large empty gaps, no touching, no grid lines, no numbers, no text. Consistent three-quarter view, soft rounded hand-painted 3D casual-game aesthetic, warm light, rich colors, crisp silhouettes. Left to right, top row: 1 a small glass milk bottle with a blue cap, 2 a fresh silvery-blue fish, 3 a golden wedge of cheese with holes, 4 a steaming terracotta bowl of creamy pea soup. Left to right, bottom row: 5 a beautiful berry celebration cake with cream layers, 6 a wicker picnic basket with bread and fruit, 7 a lavish but charming cat feast on a wooden table with fish, cake and milk, 8 an open insulated food hamper full of bottles and fish, used as an item generator. All objects fully visible and isolated on white, no cats, no people, no floor, no border.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\food-sheet.jfif",
+  "createdAt": "2026-11-24T22:58:47.582Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1376,
+    768
+  ],
+  "processing": "equal-cell crop, edge-connected background removal, components above 80 pixels retained, premultiplied-alpha resize",
+  "outputs": [
+    {
+      "output": "assets\\resources\\textures\\items\\food-1.png",
+      "cell": [
+        7,
+        7,
+        337,
+        377
+      ],
+      "foregroundArea": 13524
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\food-2.png",
+      "cell": [
+        351,
+        7,
+        681,
+        377
+      ],
+      "foregroundArea": 15093
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\food-3.png",
+      "cell": [
+        695,
+        7,
+        1025,
+        377
+      ],
+      "foregroundArea": 22752
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\food-4.png",
+      "cell": [
+        1039,
+        7,
+        1369,
+        377
+      ],
+      "foregroundArea": 23987
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\food-5.png",
+      "cell": [
+        7,
+        391,
+        337,
+        761
+      ],
+      "foregroundArea": 32543
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\food-6.png",
+      "cell": [
+        351,
+        391,
+        681,
+        761
+      ],
+      "foregroundArea": 31522
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\food-7.png",
+      "cell": [
+        695,
+        391,
+        1025,
+        761
+      ],
+      "foregroundArea": 24932
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\food-8.png",
+      "cell": [
+        1039,
+        391,
+        1369,
+        761
+      ],
+      "foregroundArea": 34714
+    }
+  ]
+}

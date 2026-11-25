@@ -1,0 +1,12 @@
+{
+  "id": "bg-lane",
+  "promptVersion": 1,
+  "prompt": "Create a wide background scene for a premium cozy merge game called Cat City. A small rainy European alley at blue hour, an adorable cardboard box beside a tiny old wooden house, worn stone steps, a crooked lantern, wet cobblestones with warm reflections, a few plants, distant rooftops. The right side has clear space for a kitten character; the lower center is uncluttered for interface. Soft rounded hand-painted 3D casual game art, cinematic warm-versus-cold lighting, cozy hopeful mood despite rain, extremely detailed but readable on a phone. No cats, no people, no text, no signs with letters, no logos, no UI, no border. Landscape composition.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\bg-lane.jfif",
+  "createdAt": "2026-11-24T22:55:35.460Z",
+  "rejectionReason": "Large gray placeholder rectangle in the center and an unintended kitten; not accepted as runtime art.",
+  "accepted": false
+}

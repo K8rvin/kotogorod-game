@@ -1,0 +1,23 @@
+{
+  "id": "bg-market",
+  "promptVersion": 1,
+  "prompt": "Paint one continuous full-bleed landscape environment for a premium cozy cat merge game. A whimsical covered fish market beside a canal at rainy blue hour, striped awnings without writing, wooden stalls with silver fish, rope coils, a tiny boat, wet cobblestones and warm lantern reflections. Hand-painted rounded 3D casual-game aesthetic, teal blue water and amber lights, detailed but readable on a phone. Entire canvas painted edge-to-edge, no animals, no people, no UI, no placeholder panels, no text, no letters, no logos, no borders.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\bg-market.jfif",
+  "createdAt": "2026-11-24T23:22:54.915Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1376,
+    768
+  ],
+  "processed": "C:\\Projects\\YandexGames\\simple\\assets\\resources\\textures\\backgrounds\\bg-market.jpg",
+  "processedSize": [
+    1380,
+    560
+  ],
+  "processing": "composition crop (0, 88, 1376, 646), Lanczos resize, progressive JPEG quality 91",
+  "accepted": true,
+  "visualCheck": "Accepted full-bleed scene; no unintended characters, placeholders, text, or border."
+}

@@ -1,0 +1,78 @@
+{
+  "id": "cats-sheet-1",
+  "promptVersion": 1,
+  "prompt": "Create a character sprite sheet for a premium cozy cat merge game: exactly six full-body anthropomorphic cats arranged 3 columns by 2 rows on a pure solid white background. Each cat sits upright centered in a separate equal rectangular cell, entire ears, tails and paws visible, generous empty gaps, no touching, no grid lines, no text, no logos, no props outside the character. Consistent soft rounded hand-painted 3D family-animation aesthetic, expressive appealing eyes, subtle detailed fur, warm rim light, high-end casual game art. Left to right, top row: 1 Augustus the dignified elderly lavender-gray cat mayor with a golden waistcoat and small spectacles, 2 Plush the cream-and-pink pastry chef cat with a white chef hat and dusty-rose apron, 3 Bars the stocky blue-gray fisherman cat with a white-and-blue captain cap. Left to right, bottom row: 4 Iris the warm beige gardener cat with a green leaf behind one ear and a tiny pink flower tucked into her satchel, 5 Nota the elegant black cat musician with a purple beret and a violet bow, 6 Gear the ginger inventor cat with blue round goggles and a small utility vest. Distinct silhouettes and personalities, exactly six cats, no other animals, no floor, no cast shadows, no border.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\cats-sheet-1.jfif",
+  "createdAt": "2026-11-24T23:07:25.429Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1264,
+    848
+  ],
+  "processing": "equal-cell crop, edge-connected background removal, components above 80 pixels retained, premultiplied-alpha resize",
+  "outputs": [
+    {
+      "output": "assets\\resources\\textures\\cats\\avgust.png",
+      "cell": [
+        0,
+        0,
+        421,
+        424
+      ],
+      "foregroundArea": 43177
+    },
+    {
+      "output": "assets\\resources\\textures\\cats\\plush.png",
+      "cell": [
+        421,
+        0,
+        843,
+        424
+      ],
+      "foregroundArea": 43882
+    },
+    {
+      "output": "assets\\resources\\textures\\cats\\bars.png",
+      "cell": [
+        843,
+        0,
+        1264,
+        424
+      ],
+      "foregroundArea": 50646
+    },
+    {
+      "output": "assets\\resources\\textures\\cats\\iris.png",
+      "cell": [
+        0,
+        424,
+        421,
+        848
+      ],
+      "foregroundArea": 43051
+    },
+    {
+      "output": "assets\\resources\\textures\\cats\\nota.png",
+      "cell": [
+        421,
+        424,
+        843,
+        848
+      ],
+      "foregroundArea": 40001
+    },
+    {
+      "output": "assets\\resources\\textures\\cats\\gear.png",
+      "cell": [
+        843,
+        424,
+        1264,
+        848
+      ],
+      "foregroundArea": 41200
+    }
+  ]
+}

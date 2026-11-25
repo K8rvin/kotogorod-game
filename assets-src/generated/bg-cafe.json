@@ -1,0 +1,23 @@
+{
+  "id": "bg-cafe",
+  "promptVersion": 1,
+  "prompt": "Paint one continuous full-bleed landscape environment for a premium cozy cat merge game. A charming old pastry cafe interior at blue hour, warm copper oven, wooden tables with tiny embroidered cloths, glass dessert display, shelves with jars, rainy windows, hanging golden lamps, soft empty space in the lower center for game interface. Hand-painted rounded 3D casual-game aesthetic, warm cinnamon and cream palette with cool blue window light, detailed cozy hopeful atmosphere. Entire canvas painted edge-to-edge. Environment only, no animals, no people, no UI, no panels, no placeholder rectangles, no text, no letters, no logos, no borders.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\bg-cafe.jfif",
+  "createdAt": "2026-11-24T23:22:13.483Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1376,
+    768
+  ],
+  "processed": "C:\\Projects\\YandexGames\\simple\\assets\\resources\\textures\\backgrounds\\bg-cafe.jpg",
+  "processedSize": [
+    1380,
+    560
+  ],
+  "processing": "composition crop (0, 88, 1376, 646), Lanczos resize, progressive JPEG quality 91",
+  "accepted": true,
+  "visualCheck": "Accepted full-bleed scene; no unintended characters, placeholders, text, or border."
+}

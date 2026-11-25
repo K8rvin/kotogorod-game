@@ -1,0 +1,98 @@
+{
+  "id": "stars-sheet",
+  "promptVersion": 1,
+  "prompt": "Create a sprite sheet for a premium cozy merge game, 4 columns by 2 rows, eight separate objects on a pure solid white background. One object centered per equal square cell, generous gaps, no touching, no grid lines, no letters, no numbers, no text. Consistent three-quarter view, soft rounded hand-painted 3D casual-game aesthetic, magical blue and violet palette with golden highlights, crisp silhouettes. Left to right, top row: 1 a glass bottle full of glowing golden star dust, 2 a cute luminous firefly with translucent wings, 3 an open celestial book with tiny stars but no letters, 4 a brass-and-blue telescope on a wooden tripod. Left to right, bottom row: 5 a radiant moonstone crystal, 6 a detailed brass orrery with planets and rings, 7 a fantastical lighthouse observatory with a glowing star beacon, 8 an open velvet-lined astronomy box with crystals and a tiny telescope, used as an item generator. All objects fully visible and isolated on white, no cats, no people, no floor, no border.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\stars-sheet.jfif",
+  "createdAt": "2026-11-24T23:17:16.259Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1408,
+    768
+  ],
+  "processing": "equal-cell crop, edge-connected background removal, components above 80 pixels retained, premultiplied-alpha resize",
+  "outputs": [
+    {
+      "output": "assets\\resources\\textures\\items\\stars-1.png",
+      "cell": [
+        45,
+        45,
+        307,
+        339
+      ],
+      "foregroundArea": 17629
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\stars-2.png",
+      "cell": [
+        397,
+        45,
+        659,
+        339
+      ],
+      "foregroundArea": 27837
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\stars-3.png",
+      "cell": [
+        749,
+        45,
+        1011,
+        339
+      ],
+      "foregroundArea": 27035
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\stars-4.png",
+      "cell": [
+        1101,
+        45,
+        1363,
+        339
+      ],
+      "foregroundArea": 16271
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\stars-5.png",
+      "cell": [
+        45,
+        429,
+        307,
+        723
+      ],
+      "foregroundArea": 27314
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\stars-6.png",
+      "cell": [
+        397,
+        429,
+        659,
+        723
+      ],
+      "foregroundArea": 29742
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\stars-7.png",
+      "cell": [
+        749,
+        429,
+        1011,
+        723
+      ],
+      "foregroundArea": 28580
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\stars-8.png",
+      "cell": [
+        1101,
+        429,
+        1363,
+        723
+      ],
+      "foregroundArea": 35454
+    }
+  ]
+}

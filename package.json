@@ -1,0 +1,19 @@
+{
+  "name": "kotogorod",
+  "version": "1.0.0",
+  "private": true,
+  "type": "2d",
+  "creator": {
+    "version": "3.8.8"
+  },
+  "scripts": {
+    "dev": "node tools/cocos.mjs editor",
+    "build": "node tools/cocos.mjs build",
+    "preview": "node tools/serve.mjs",
+    "typecheck": "tsc -p .cache/cocos-tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
+  },
+  "uuid": "ccb81f41-040c-4959-9766-8e452b7a67c1"
+}

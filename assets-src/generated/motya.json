@@ -1,0 +1,22 @@
+{
+  "id": "motya",
+  "promptVersion": 1,
+  "prompt": "Create one premium full-body character sprite for a cozy merge game. Motya is a tiny ginger kitten with soft honey-orange fur, subtle darker stripes, big expressive amber eyes, and a loosely knitted raspberry-red scarf. Sitting upright in a three-quarter view, front paws together, hopeful gentle smile, long fluffy tail curled beside the body. Appealing silhouette, soft rounded proportions, detailed but restrained fur, polished hand-painted 3D family-animation aesthetic, warm cozy rim light, high-end casual mobile game character art. Show the entire character including ears, tail and paws, centered with generous margin. Exactly one kitten. Pure solid white background, no floor, no cast shadow, no box, no props, no text, no logo, no border, no other objects. The background must remain plain white for later cutout.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\motya.jfif",
+  "createdAt": "2026-11-24T22:51:45.357Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1376,
+    768
+  ],
+  "processed": "C:\\Projects\\YandexGames\\simple\\assets\\resources\\textures\\cats\\motya.png",
+  "processedSize": [
+    400,
+    460
+  ],
+  "processing": "edge-connected near-white background removal, largest foreground component, edge color decontamination, premultiplied-alpha export",
+  "foregroundComponentArea": 187238
+}

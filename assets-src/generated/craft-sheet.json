@@ -1,0 +1,98 @@
+{
+  "id": "craft-sheet",
+  "promptVersion": 1,
+  "prompt": "Create a sprite sheet for a premium cozy merge game, 4 columns by 2 rows, eight separate objects on a pure solid white background. One object centered per equal square cell, generous gaps, no touching, no grid lines, no text, no numbers. Consistent three-quarter view, soft rounded hand-painted 3D casual-game aesthetic, warm light, crisp silhouettes. Left to right, top row: 1 a brass and blue-steel gear, 2 a charming handheld lantern glowing amber, 3 a blue-and-violet umbrella with a curved wooden handle, 4 a cute vintage mint sewing machine. Left to right, bottom row: 5 a wooden grandfather clock with a golden pendulum, 6 a friendly little cat-shaped mechanical helper robot, 7 a whimsical inventor workshop with glowing gears and chimneys, 8 an open wooden toolbox full of gears, lanterns and tools, used as an item generator. All objects fully visible and isolated on white, no cats except the explicitly requested robot, no people, no floor, no border.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\craft-sheet.jfif",
+  "createdAt": "2026-11-24T23:13:21.904Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1376,
+    768
+  ],
+  "processing": "equal-cell crop, edge-connected background removal, components above 80 pixels retained, premultiplied-alpha resize",
+  "outputs": [
+    {
+      "output": "assets\\resources\\textures\\items\\craft-1.png",
+      "cell": [
+        0,
+        0,
+        344,
+        384
+      ],
+      "foregroundArea": 30968
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\craft-2.png",
+      "cell": [
+        344,
+        0,
+        688,
+        384
+      ],
+      "foregroundArea": 23211
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\craft-3.png",
+      "cell": [
+        688,
+        0,
+        1032,
+        384
+      ],
+      "foregroundArea": 24720
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\craft-4.png",
+      "cell": [
+        1032,
+        0,
+        1376,
+        384
+      ],
+      "foregroundArea": 37901
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\craft-5.png",
+      "cell": [
+        0,
+        384,
+        344,
+        768
+      ],
+      "foregroundArea": 32989
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\craft-6.png",
+      "cell": [
+        344,
+        384,
+        688,
+        768
+      ],
+      "foregroundArea": 27345
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\craft-7.png",
+      "cell": [
+        688,
+        384,
+        1032,
+        768
+      ],
+      "foregroundArea": 40974
+    },
+    {
+      "output": "assets\\resources\\textures\\items\\craft-8.png",
+      "cell": [
+        1032,
+        384,
+        1376,
+        768
+      ],
+      "foregroundArea": 40054
+    }
+  ]
+}

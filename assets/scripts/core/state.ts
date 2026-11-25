@@ -1,0 +1,919 @@
+import { DATA, cats, chains, districts, districtFor } from "../data";
+
+export type ChainId = keyof typeof chains;
+export type GameEvent = "change" | "spawn" | "merge" | "move" | "swap" | "deliver" | "restore" | "chest" | "district" | "achievement" | "level" | "mode" | "error";
+
+export interface BoardItem {
+  id: number;
+  chain: ChainId;
+  tier: number;
+}
+
+export interface Order {
+  id: number;
+  cat: string;
+  chain: ChainId;
+  tier: number;
+  title: string;
+  stars: number;
+  coins: number;
+  xp: number;
+}
+
+export type ModeId = "dreams" | "rush" | "night" | "festival";
+
+export interface ModeSession {
+  id: ModeId;
+  board: Array<BoardItem | null>;
+  orders: Order[];
+  chains: ChainId[];
+  movesLeft: number | null;
+  endsAt: number | null;
+  score: number;
+  completed: number;
+  stage: number;
+  target: { chain: ChainId; tier: number } | null;
+}
+
+export interface GameProfile {
+  schema: number;
+  createdAt: number;
+  lastSaved: number;
+  rngState: number;
+  nextItemId: number;
+  nextOrderId: number;
+  energy: number;
+  energyAt: number;
+  stars: number;
+  coins: number;
+  keys: number;
+  xp: number;
+  level: number;
+  currentDistrict: number;
+  unlockedDistricts: number;
+  districtProgress: number[];
+  completedDistricts: number[];
+  endlessDistrict: number;
+  board: Array<BoardItem | null>;
+  inventory: BoardItem[];
+  inventoryCap: number;
+  orders: Order[];
+  ordersCompleted: number;
+  chest: { progress: number; readyAt: number | null };
+  cats: string[];
+  discovered: Record<string, number[]>;
+  boosters: Record<"hammer" | "rainbow" | "shuffle", number>;
+  tutorial: number;
+  storySeen: string[];
+  achievements: string[];
+  daily: { lastClaim: string; streak: number };
+  settings: { sound: boolean; music: boolean; volume: number; reducedMotion: boolean };
+  stats: {
+    merges: number;
+    merges5: number;
+    orders: number;
+    cats: number;
+    districts: number;
+    bestTier: number;
+    dreams: number;
+    rushBest: number;
+    nightBest: number;
+    festivals: number;
+    itemsCreated: number;
+    playSeconds: number;
+  };
+  modeProgress: {
+    dreamLevel: number;
+    festivalStage: number;
+    nightUnlocked: boolean;
+  };
+}
+
+interface ActionResult {
+  ok: boolean;
+  reason?: string;
+  [key: string]: unknown;
+}
+
+const STORAGE_KEY = "kotogorod.profile.v3";
+const BACKUP_KEY = "kotogorod.profile.backup";
+const REGEN_MS = 90_000;
+const CHEST_DELAY = 10 * 60_000;
+
+function makeProfile(): GameProfile {
+  const board: Array<BoardItem | null> = Array(DATA.boardSize).fill(null);
+  board[17] = { id: 1, chain: "cozy", tier: 1 };
+  board[18] = { id: 2, chain: "cozy", tier: 1 };
+  board[19] = { id: 3, chain: "cozy", tier: 1 };
+  return {
+    schema: DATA.saveVersion,
+    createdAt: Date.now(),
+    lastSaved: Date.now(),
+    rngState: (Date.now() ^ 0x9e3779b9) >>> 0,
+    nextItemId: 4,
+    nextOrderId: 4,
+    energy: 80,
+    energyAt: Date.now(),
+    stars: 0,
+    coins: 35,
+    keys: 0,
+    xp: 0,
+    level: 1,
+    currentDistrict: 0,
+    unlockedDistricts: 1,
+    districtProgress: Array(districts.length).fill(0),
+    completedDistricts: [],
+    endlessDistrict: 0,
+    board,
+    inventory: [],
+    inventoryCap: 6,
+    orders: [
+      { id: 1, cat: "motya", chain: "cozy", tier: 2, title: "Игрушка против одиночества", stars: 5, coins: 4, xp: 15 },
+      { id: 2, cat: "avgust", chain: "cozy", tier: 2, title: "Маленький подарок городу", stars: 3, coins: 2, xp: 12 },
+      { id: 3, cat: "motya", chain: "food", tier: 2, title: "Первый ужин", stars: 3, coins: 2, xp: 12 }
+    ],
+    ordersCompleted: 0,
+    chest: { progress: 0, readyAt: null },
+    cats: ["avgust"],
+    discovered: { cozy: [1], food: [1] },
+    boosters: { hammer: 2, rainbow: 1, shuffle: 2 },
+    tutorial: 0,
+    storySeen: [],
+    achievements: [],
+    daily: { lastClaim: "", streak: 0 },
+    settings: { sound: true, music: true, volume: 0.65, reducedMotion: false },
+    stats: { merges: 0, merges5: 0, orders: 0, cats: 1, districts: 0, bestTier: 1, dreams: 0, rushBest: 0, nightBest: 0, festivals: 0, itemsCreated: 3, playSeconds: 0 },
+    modeProgress: { dreamLevel: 0, festivalStage: 0, nightUnlocked: false }
+  };
+}
+
+function loadProfile(): GameProfile | null {
+  try {
+    const raw = globalThis.localStorage?.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<GameProfile>;
+    if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.board)) return null;
+    const base = makeProfile();
+    const profile: GameProfile = {
+      ...base,
+      ...parsed,
+      schema: DATA.saveVersion,
+      board: parsed.board.slice(0, DATA.boardSize),
+      chest: { ...base.chest, ...parsed.chest },
+      daily: { ...base.daily, ...parsed.daily },
+      settings: { ...base.settings, ...parsed.settings },
+      stats: { ...base.stats, ...parsed.stats },
+      modeProgress: { ...base.modeProgress, ...parsed.modeProgress },
+      boosters: { ...base.boosters, ...parsed.boosters },
+      discovered: { ...base.discovered, ...parsed.discovered }
+    };
+    while (profile.board.length < DATA.boardSize) profile.board.push(null);
+    while (profile.districtProgress.length < Math.max(districts.length, profile.unlockedDistricts)) profile.districtProgress.push(0);
+    profile.districtProgress = profile.districtProgress.map((value) => Number.isFinite(Number(value)) ? Math.max(0, Number(value)) : 0);
+    profile.board = profile.board.map((item) => item && chains[item.chain] ? { id: Number(item.id), chain: item.chain, tier: Math.max(1, Math.min(7, Number(item.tier))) } : null);
+    profile.orders = Array.isArray(parsed.orders) ? parsed.orders.filter((order) => order && chains[order.chain]).slice(0, 3) : [];
+    return profile;
+  } catch {
+    return null;
+  }
+}
+
+export class GameState extends EventTarget {
+  profile: GameProfile;
+  mode: ModeSession | null = null;
+  private saveTimer: ReturnType<typeof setTimeout> | null = null;
+  private playTimeRemainder = 0;
+
+  get board(): Array<BoardItem | null> {
+    return this.mode?.board ?? this.profile.board;
+  }
+
+  get activeOrders(): Order[] {
+    return this.mode?.orders ?? this.profile.orders;
+  }
+
+  get playableChains(): ChainId[] {
+    return this.mode?.chains ?? this.availableChains;
+  }
+
+  constructor() {
+    super();
+    this.profile = loadProfile() ?? makeProfile();
+    this.syncEnergy();
+    this.ensureOrders();
+    this.checkAchievements();
+  }
+
+  private random(): number {
+    this.profile.rngState = (Math.imul(this.profile.rngState, 1664525) + 1013904223) >>> 0;
+    return this.profile.rngState / 4294967296;
+  }
+
+  private pick<T>(values: readonly T[]): T {
+    return values[Math.floor(this.random() * values.length)];
+  }
+
+  on(event: GameEvent, callback: (detail: Record<string, unknown>) => void): () => void {
+    const listener = (event: Event) => callback((event as CustomEvent).detail ?? {});
+    this.addEventListener(event, listener);
+    return () => this.removeEventListener(event, listener);
+  }
+
+  private emit(event: GameEvent, detail: Record<string, unknown> = {}): void {
+    this.dispatchEvent(new CustomEvent(event, { detail }));
+  }
+
+  changed(): void {
+    this.profile.lastSaved = Date.now();
+    this.emit("change", { profile: this.profile });
+    this.scheduleSave();
+  }
+
+  private scheduleSave(): void {
+    if (this.saveTimer) clearTimeout(this.saveTimer);
+    this.saveTimer = setTimeout(() => this.save(), 120);
+  }
+
+  save(): boolean {
+    try {
+      if (!globalThis.localStorage) return false;
+      const previous = globalThis.localStorage.getItem(STORAGE_KEY);
+      if (previous) globalThis.localStorage.setItem(BACKUP_KEY, previous);
+      globalThis.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.profile));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  exportSave(): string {
+    return JSON.stringify(this.profile, null, 2);
+  }
+
+  importSave(raw: string): boolean {
+    try {
+      const parsed = JSON.parse(raw);
+      if (!parsed || !Array.isArray(parsed.board) || typeof parsed.level !== "number") return false;
+      globalThis.localStorage?.setItem(STORAGE_KEY, raw);
+      const loaded = loadProfile();
+      if (!loaded) return false;
+      this.mode = null;
+      this.profile = loaded;
+      this.ensureOrders();
+      this.changed();
+      this.emit("district", { index: this.profile.currentDistrict });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  reset(): void {
+    this.mode = null;
+    this.profile = makeProfile();
+    this.changed();
+    this.emit("district", { index: 0, reset: true });
+    this.save();
+  }
+
+  get energyCap(): number {
+    return 80 + Math.min(40, (this.profile.level - 1) * 2);
+  }
+
+  get currentDistrict() {
+    return districtFor(this.profile.currentDistrict);
+  }
+
+  get currentTask() {
+    const progress = this.profile.districtProgress[this.profile.currentDistrict] ?? 0;
+    return this.currentDistrict.tasks[progress] ?? null;
+  }
+
+  get availableChains(): ChainId[] {
+    const result = new Set<ChainId>();
+    for (let index = 0; index < this.profile.unlockedDistricts; index++) districtFor(index).chains.forEach((chain) => result.add(chain as ChainId));
+    return Array.from(result);
+  }
+
+  syncEnergy(now = Date.now()): void {
+    const p = this.profile;
+    if (p.energy >= this.energyCap) {
+      p.energy = this.energyCap;
+      p.energyAt = now;
+      return;
+    }
+    const elapsed = Math.max(0, now - p.energyAt);
+    const gained = Math.floor(elapsed / REGEN_MS);
+    if (gained > 0) {
+      p.energy = Math.min(this.energyCap, p.energy + gained);
+      p.energyAt += gained * REGEN_MS;
+      if (p.energy >= this.energyCap) p.energyAt = now;
+    }
+  }
+
+  energyCountdown(now = Date.now()): number {
+    if (this.profile.energy >= this.energyCap) return 0;
+    return Math.max(0, REGEN_MS - (now - this.profile.energyAt));
+  }
+
+  private newItem(chain: ChainId, tier = 1): BoardItem {
+    return { id: this.profile.nextItemId++, chain, tier };
+  }
+
+  private discover(item: BoardItem): void {
+    const list = this.profile.discovered[item.chain] ??= [];
+    if (!list.includes(item.tier)) list.push(item.tier);
+    this.profile.stats.bestTier = Math.max(this.profile.stats.bestTier, item.tier);
+  }
+
+  spawn(chain: ChainId, free = false, preferredIndex?: number): ActionResult {
+    this.syncEnergy();
+    if (!this.playableChains.includes(chain)) return this.fail("Эта цепочка ещё не открыта");
+    const freeSpawn = free || this.mode !== null;
+    if (!freeSpawn && this.profile.energy < 1) return this.fail("Энергия восстановится совсем скоро");
+    const empty = this.emptyCells(preferredIndex);
+    if (!empty.length) return this.fail("Доска заполнена. Слейте предметы или уберите что-нибудь в сумку");
+    if (!freeSpawn) this.profile.energy--;
+    const index = this.pick(empty);
+    const item = this.newItem(chain);
+    this.board[index] = item;
+    this.profile.stats.itemsCreated++;
+    this.discover(item);
+    if (this.mode?.movesLeft !== null && this.mode?.movesLeft !== undefined) this.mode.movesLeft = Math.max(0, this.mode.movesLeft - 1);
+    this.emit("spawn", { index, item });
+    this.changed();
+    if (this.mode?.movesLeft === 0) this.finishMode(false);
+    return { ok: true, index, item };
+  }
+
+  private emptyCells(preferred?: number): number[] {
+    const empty: number[] = [];
+    this.board.forEach((item, index) => { if (!item) empty.push(index); });
+    if (preferred !== undefined) {
+      empty.sort((a, b) => this.distance(a, preferred) - this.distance(b, preferred));
+    } else {
+      for (let i = empty.length - 1; i > 0; i--) {
+        const j = Math.floor(this.random() * (i + 1));
+        [empty[i], empty[j]] = [empty[j], empty[i]];
+      }
+    }
+    return empty;
+  }
+
+  private distance(a: number, b: number): number {
+    const ax = a % DATA.columns, ay = Math.floor(a / DATA.columns);
+    const bx = b % DATA.columns, by = Math.floor(b / DATA.columns);
+    return Math.abs(ax - bx) + Math.abs(ay - by);
+  }
+
+  moveItem(from: number, to: number): ActionResult {
+    const board = this.board;
+    const source = board[from];
+    if (!source || from === to || from < 0 || to < 0 || from >= board.length || to >= board.length) return { ok: false };
+    const target = board[to];
+    if (!target) {
+      board[to] = source;
+      board[from] = null;
+      this.emit("move", { from, to, item: source });
+      this.changed();
+      return { ok: true, type: "move" };
+    }
+    if (source.chain !== target.chain || source.tier !== target.tier) {
+      board[from] = target;
+      board[to] = source;
+      this.emit("swap", { from, to, source, target });
+      this.changed();
+      return { ok: true, type: "swap" };
+    }
+
+    const candidates = board
+      .map((item, index) => ({ item, index }))
+      .filter(({ item, index }) => index !== from && index !== to && item?.chain === source.chain && item.tier === source.tier)
+      .sort((a, b) => this.distance(a.index, to) - this.distance(b.index, to));
+    if (!candidates.length) {
+      board[from] = target;
+      board[to] = source;
+      this.emit("swap", { from, to, source, target });
+      this.changed();
+      return { ok: true, type: "swap" };
+    }
+
+    const count = candidates.length >= 3 ? 5 : 3;
+    const sources = [from, to, ...candidates.slice(0, count - 2).map(({ index }) => index)];
+    sources.forEach((index) => { board[index] = null; });
+    const bonus = count === 5;
+
+    if (source.tier >= 7) {
+      const stars = 30 + this.profile.currentDistrict * 5;
+      const coins = bonus ? 100 : 55;
+      this.profile.stars += stars;
+      this.profile.coins += coins;
+      this.profile.stats.merges++;
+      if (bonus) this.profile.stats.merges5++;
+      this.addXp(50);
+      this.emit("merge", { sources, to, recycled: true, bonus, stars, coins, source });
+      this.recordMerge(source.chain, source.tier, bonus);
+      this.afterProgress();
+      return { ok: true, type: "recycle" };
+    }
+
+    const item = this.newItem(source.chain, source.tier + 1);
+    board[to] = item;
+    const outputs = [to];
+    if (bonus) {
+      const empty = this.emptyCells(to)[0];
+      if (empty !== undefined) {
+        board[empty] = this.newItem(source.chain, source.tier + 1);
+        outputs.push(empty);
+      }
+      this.profile.stats.merges5++;
+    }
+    this.profile.stats.merges++;
+    this.profile.tutorial = Math.max(this.profile.tutorial, 1);
+    this.discover(item);
+    this.addXp(item.tier * 3 + (bonus ? 8 : 0));
+    this.emit("merge", { sources, to, outputs, item, bonus, source });
+    this.recordMerge(item.chain, item.tier, bonus);
+    this.afterProgress();
+    return { ok: true, type: "merge", item, bonus, outputs };
+  }
+
+  startMode(id: ModeId): ActionResult {
+    const descriptor = DATA.modes.find((mode) => mode.id === id);
+    if (!descriptor || this.profile.unlockedDistricts <= descriptor.unlock) return this.fail("Этот режим ещё закрыт");
+    if (this.mode) this.exitMode();
+    const session: ModeSession = {
+      id,
+      board: Array(DATA.boardSize).fill(null),
+      orders: [],
+      chains: this.availableChains,
+      movesLeft: null,
+      endsAt: null,
+      score: 0,
+      completed: 0,
+      stage: 0,
+      target: null
+    };
+    this.mode = session;
+    if (id === "dreams") {
+      const tier = 2 + this.profile.modeProgress.dreamLevel % 3;
+      const chain = this.pick(session.chains);
+      session.target = { chain, tier };
+      session.movesLeft = [0, 8, 18, 40][tier];
+      this.seedModeBoard(chain, 1, Math.pow(3, tier - 1));
+    } else if (id === "rush") {
+      session.endsAt = Date.now() + 180_000;
+      session.chains.forEach((chain) => {
+        this.seedModeBoard(chain, 1, 3);
+        this.seedModeBoard(chain, 2, 3);
+      });
+    } else if (id === "night") {
+      this.profile.modeProgress.nightUnlocked = true;
+      session.chains.forEach((chain) => this.seedModeBoard(chain, 1, 6));
+      for (let i = 0; i < 3; i++) session.orders.push(this.createModeOrder());
+    } else {
+      this.setupFestivalStage(session);
+    }
+    this.emit("mode", { active: true, id });
+    this.changed();
+    return { ok: true };
+  }
+
+  tickMode(now = Date.now()): void {
+    if (this.mode?.endsAt !== null && this.mode?.endsAt !== undefined && now >= this.mode.endsAt) this.finishMode(true);
+  }
+
+  trackTime(deltaTime: number): void {
+    this.playTimeRemainder += Math.min(1, Math.max(0, deltaTime));
+    const seconds = Math.floor(this.playTimeRemainder);
+    if (!seconds) return;
+    this.playTimeRemainder -= seconds;
+    this.profile.stats.playSeconds += seconds;
+    if (this.profile.stats.playSeconds % 10 < seconds) this.scheduleSave();
+  }
+
+  exitMode(): void {
+    if (!this.mode) return;
+    const session = this.mode;
+    if (session.id === "rush") this.profile.stats.rushBest = Math.max(this.profile.stats.rushBest, session.score);
+    if (session.id === "night") this.profile.stats.nightBest = Math.max(this.profile.stats.nightBest, session.completed);
+    this.mode = null;
+    this.emit("mode", { active: false, id: session.id, abandoned: true });
+    this.changed();
+  }
+
+  private finishMode(completed: boolean): void {
+    const session = this.mode;
+    if (!session) return;
+    this.mode = null;
+    if (session.id === "rush") {
+      this.profile.stats.rushBest = Math.max(this.profile.stats.rushBest, session.score);
+      if (completed) this.profile.coins += Math.max(5, Math.floor(session.score / 100));
+    } else if (session.id === "night") {
+      this.profile.stats.nightBest = Math.max(this.profile.stats.nightBest, session.completed);
+    } else if (completed && session.id === "dreams") {
+      this.profile.stats.dreams++;
+      this.profile.modeProgress.dreamLevel++;
+      this.profile.coins += 20 + Math.min(30, this.profile.modeProgress.dreamLevel * 2);
+    } else if (completed && session.id === "festival") {
+      this.profile.stats.festivals++;
+      this.profile.modeProgress.festivalStage++;
+      this.profile.boosters.rainbow++;
+      this.profile.coins += 80;
+    }
+    this.checkAchievements();
+    this.emit("mode", { active: false, id: session.id, completed, score: session.score });
+    this.changed();
+  }
+
+  private recordMerge(chain: ChainId, tier: number, bonus: boolean): void {
+    const session = this.mode;
+    if (!session) return;
+    session.score += tier * 25 * (bonus ? 2 : 1);
+    if (session.movesLeft !== null) session.movesLeft = Math.max(0, session.movesLeft - 1);
+    if (session.id === "dreams" && session.target && chain === session.target.chain && tier >= session.target.tier) {
+      this.finishMode(true);
+      return;
+    }
+    if (session.movesLeft === 0 && session.id === "festival" && session.orders.some((order) => this.hasRequirement(order))) return;
+    if (session.movesLeft === 0) this.finishMode(false);
+  }
+
+  private seedModeBoard(chain: ChainId, tier: number, count: number): void {
+    const session = this.mode;
+    if (!session) return;
+    for (let i = 0; i < count; i++) {
+      const index = session.board.findIndex((item) => item === null);
+      if (index < 0) return;
+      const item = this.newItem(chain, tier);
+      session.board[index] = item;
+      this.discover(item);
+    }
+  }
+
+  private createModeOrder(chain = this.pick(this.mode?.chains ?? this.availableChains), tier?: number): Order {
+    const session = this.mode;
+    const level = session?.completed ?? 0;
+    const actualTier = tier ?? Math.min(5, 2 + Math.floor(level / 5));
+    return {
+      id: this.profile.nextOrderId++,
+      cat: this.pick([this.currentDistrict.resident, ...this.profile.cats]),
+      chain,
+      tier: actualTier,
+      title: this.pick(DATA.orderNames[chain]),
+      stars: actualTier,
+      coins: actualTier * 2,
+      xp: actualTier * 8
+    };
+  }
+
+  private setupFestivalStage(session: ModeSession): void {
+    const tier = Math.min(4, 2 + session.stage);
+    const chain = this.pick(session.chains);
+    session.board = Array(DATA.boardSize).fill(null);
+    session.target = { chain, tier };
+    session.movesLeft = [10, 22, 40][session.stage];
+    this.seedModeBoard(chain, 1, Math.pow(3, tier - 1));
+    session.orders = [this.createModeOrder(chain, tier)];
+  }
+
+  private deliverMode(orderId: number): ActionResult {
+    const session = this.mode;
+    if (!session || session.id === "dreams" || session.id === "rush") return this.fail("В этом режиме выполняйте цель на доске");
+    const index = session.orders.findIndex((order) => order.id === orderId);
+    if (index < 0) return { ok: false };
+    const order = session.orders[index];
+    const itemIndex = this.board.findIndex((item) => item?.chain === order.chain && item.tier === order.tier);
+    if (itemIndex < 0) return this.fail("Такого предмета пока нет на доске");
+    const item = this.board[itemIndex];
+    this.board[itemIndex] = null;
+    session.completed++;
+    session.score += order.tier * 100;
+    this.profile.coins += order.coins;
+    this.profile.stats.orders++;
+    this.addXp(order.xp);
+    this.emit("deliver", { order, item, itemIndex });
+    if (session.id === "night") {
+      this.profile.stats.nightBest = Math.max(this.profile.stats.nightBest, session.completed);
+      session.orders[index] = this.createModeOrder();
+    } else if (session.id === "festival") {
+      if (session.stage >= 2) {
+        this.finishMode(true);
+        return { ok: true, order, item };
+      }
+      session.stage++;
+      this.setupFestivalStage(session);
+    }
+    this.afterProgress();
+    return { ok: true, order, item };
+  }
+
+  private ensureOrders(): void {
+    while (this.profile.orders.length < 3) this.profile.orders.push(this.generateOrder());
+  }
+
+  private generateOrder(): Order {
+    const available = this.availableChains;
+    const chain = this.pick<ChainId>(available.length ? available : ["cozy"]);
+    const maxTier = Math.min(5, 2 + Math.floor((this.profile.ordersCompleted + 4) / 8));
+    const roll = this.random();
+    const tier = Math.max(2, Math.min(maxTier, 2 + Math.floor(roll * maxTier)));
+    const district = this.currentDistrict;
+    const residentPool = [district.resident, ...this.profile.cats];
+    const cat = this.pick(residentPool);
+    const titles = DATA.orderNames[chain];
+    return {
+      id: this.profile.nextOrderId++,
+      cat,
+      chain,
+      tier,
+      title: this.pick(titles),
+      stars: Math.max(2, Math.round(Math.pow(3, tier - 1) * 0.48 * (1 + this.profile.currentDistrict * 0.16))),
+      coins: tier + Math.floor(this.profile.currentDistrict / 2),
+      xp: tier * 7
+    };
+  }
+
+  hasRequirement(order: Order): boolean {
+    return this.board.some((item) => item?.chain === order.chain && item.tier === order.tier);
+  }
+
+  deliver(orderId: number): ActionResult {
+    if (this.mode) return this.deliverMode(orderId);
+    const index = this.profile.orders.findIndex((order) => order.id === orderId);
+    if (index < 0) return { ok: false };
+    const order = this.profile.orders[index];
+    const itemIndex = this.board.findIndex((item) => item?.chain === order.chain && item.tier === order.tier);
+    if (itemIndex < 0) return this.fail("Такого предмета пока нет на доске");
+    const item = this.board[itemIndex];
+    this.board[itemIndex] = null;
+    this.profile.stars += order.stars;
+    this.profile.coins += order.coins;
+    this.profile.ordersCompleted++;
+    this.profile.stats.orders++;
+    this.profile.tutorial = Math.max(this.profile.tutorial, 2);
+    this.addXp(order.xp);
+    this.profile.orders[index] = this.generateOrder();
+
+    const chest = this.profile.chest;
+    if (chest.readyAt === null) {
+      chest.progress = Math.min(3, chest.progress + 1);
+      if (chest.progress >= 3) {
+        chest.progress = 0;
+        chest.readyAt = Date.now() + (this.profile.ordersCompleted <= 3 ? 0 : CHEST_DELAY);
+      }
+    }
+
+    this.emit("deliver", { order, item, itemIndex });
+    this.afterProgress();
+    return { ok: true, order, item };
+  }
+
+  rerollOrder(orderId: number): ActionResult {
+    const orders = this.activeOrders;
+    const index = orders.findIndex((order) => order.id === orderId);
+    if (index < 0) return { ok: false };
+    if (this.mode && this.mode.id !== "night") return this.fail("В этом испытании цель менять нельзя");
+    if (this.profile.coins < 3) return this.fail("Для смены заказа нужно 3 монеты");
+    this.profile.coins -= 3;
+    const old = orders[index];
+    let next = this.mode ? this.createModeOrder() : this.generateOrder();
+    for (let tries = 0; tries < 4 && next.chain === old.chain && next.tier === old.tier; tries++) next = this.mode ? this.createModeOrder() : this.generateOrder();
+    orders[index] = next;
+    this.changed();
+    return { ok: true, order: next };
+  }
+
+  restore(): ActionResult {
+    if (this.mode) return this.fail("Сначала завершите текущий режим");
+    const task = this.currentTask;
+    if (!task) return this.fail("Этот район уже сияет. Пора открыть следующий!");
+    if (this.profile.stars < task.cost) return this.fail(`Нужно ещё ${task.cost - this.profile.stars} ★`);
+    this.profile.stars -= task.cost;
+    const districtIndex = this.profile.currentDistrict;
+    const progress = this.profile.districtProgress[districtIndex] + 1;
+    this.profile.districtProgress[districtIndex] = progress;
+    this.profile.tutorial = Math.max(this.profile.tutorial, 3);
+    this.addXp(25 + districtIndex * 4);
+    if (progress === 2 || progress === 8) this.unlockCat(this.currentDistrict.resident);
+    const completed = progress >= this.currentDistrict.tasks.length;
+    if (completed && !this.profile.completedDistricts.includes(districtIndex)) {
+      this.profile.completedDistricts.push(districtIndex);
+      this.profile.stats.districts++;
+      this.profile.keys++;
+    }
+    this.emit("restore", { task, districtIndex, progress, completed, district: this.currentDistrict });
+    this.afterProgress();
+    return { ok: true, task, completed };
+  }
+
+  unlockDistrict(index: number): ActionResult {
+    if (index !== this.profile.unlockedDistricts || index < 0) return this.fail("Сначала завершите предыдущий район");
+    if (!this.profile.completedDistricts.includes(index - 1)) return this.fail("Предыдущий район ещё ждёт восстановления");
+    const district = districtFor(index);
+    if (this.profile.keys < district.keyCost) return this.fail("Нужен ключ от района");
+    this.profile.keys -= district.keyCost;
+    this.profile.unlockedDistricts++;
+    while (this.profile.districtProgress.length < this.profile.unlockedDistricts) this.profile.districtProgress.push(0);
+    this.profile.currentDistrict = index;
+    if (index >= districts.length) this.profile.endlessDistrict = Math.max(this.profile.endlessDistrict, index - districts.length + 1);
+    district.chains.forEach((chain) => { this.profile.discovered[chain] ??= [1]; });
+    this.emit("district", { index, district });
+    this.afterProgress();
+    return { ok: true, district };
+  }
+
+  travelTo(index: number): ActionResult {
+    if (index < 0 || index >= this.profile.unlockedDistricts) return this.fail("Район ещё закрыт");
+    if (this.mode) this.exitMode();
+    this.profile.currentDistrict = index;
+    this.emit("district", { index, district: districts[index] });
+    this.changed();
+    return { ok: true };
+  }
+
+  private unlockCat(id: string): void {
+    if (!this.profile.cats.includes(id)) {
+      this.profile.cats.push(id);
+      this.profile.stats.cats = this.profile.cats.length;
+      const cat = cats.find((entry) => entry.id === id);
+      if (cat) this.emit("achievement", { cat, resident: true });
+    }
+  }
+
+  openChest(): ActionResult {
+    if (this.mode) return this.fail("Сундук основной истории ждёт возвращения в город");
+    const chest = this.profile.chest;
+    if (chest.readyAt === null) return this.fail("Сундук появится после трёх заказов");
+    if (Date.now() < chest.readyAt) return this.fail("Сундук ещё закрыт");
+    const empty = this.emptyCells();
+    if (empty.length < 2) return this.fail("Освободите хотя бы две клетки для сюрпризов");
+    const drops: Array<{ index: number; item: BoardItem }> = [];
+    const chain = this.pick(this.availableChains);
+    [1, 1, 2].forEach((tier, i) => {
+      const index = empty[i];
+      if (index === undefined) return;
+      const item = this.newItem(chain, tier);
+      this.board[index] = item;
+      this.discover(item);
+      drops.push({ index, item });
+    });
+    this.profile.stars += 5 + this.profile.currentDistrict * 2;
+    this.profile.coins += 10;
+    chest.readyAt = null;
+    chest.progress = 0;
+    this.emit("chest", { drops, chain });
+    this.afterProgress();
+    return { ok: true, drops };
+  }
+
+  storeItem(index: number): ActionResult {
+    if (this.mode) return this.fail("Сумка доступна после возвращения в основную историю");
+    const item = this.board[index];
+    if (!item) return { ok: false };
+    if (this.profile.inventory.length >= this.profile.inventoryCap) return this.fail("Сумка заполнена");
+    this.board[index] = null;
+    this.profile.inventory.push(item);
+    this.changed();
+    return { ok: true };
+  }
+
+  retrieveItem(inventoryIndex: number, boardIndex?: number): ActionResult {
+    if (this.mode) return this.fail("Сумка доступна после возвращения в основную историю");
+    const item = this.profile.inventory[inventoryIndex];
+    if (!item) return { ok: false };
+    const empty = boardIndex !== undefined && !this.board[boardIndex] ? boardIndex : this.emptyCells()[0];
+    if (empty === undefined || this.board[empty]) return this.fail("На доске нет свободной клетки");
+    this.board[empty] = item;
+    this.profile.inventory.splice(inventoryIndex, 1);
+    this.emit("spawn", { index: empty, item });
+    this.changed();
+    return { ok: true, index: empty };
+  }
+
+  useHammer(index: number): ActionResult {
+    const item = this.board[index];
+    if (!item) return this.fail("Сначала выберите предмет на доске");
+    if (this.profile.boosters.hammer < 1) return this.fail("Нет молотков");
+    this.profile.boosters.hammer--;
+    this.board[index] = null;
+    this.emit("move", { index, hammer: true });
+    this.changed();
+    return { ok: true, item };
+  }
+
+  useRainbow(index: number): ActionResult {
+    const item = this.board[index];
+    if (!item) return this.fail("Сначала выберите предмет на доске");
+    if (item.tier >= 7) return this.fail("Этот предмет уже высшего уровня");
+    if (this.profile.boosters.rainbow < 1) return this.fail("Нет радужных усилителей");
+    this.profile.boosters.rainbow--;
+    item.tier++;
+    this.discover(item);
+    this.emit("merge", { sources: [index], to: index, outputs: [index], item, bonus: false, rainbow: true });
+    this.recordMerge(item.chain, item.tier, false);
+    this.afterProgress();
+    return { ok: true, item };
+  }
+
+  sellItem(index: number): ActionResult {
+    const item = this.board[index];
+    if (!item) return { ok: false };
+    const value = Math.max(1, Math.round(Math.pow(2, item.tier - 1) / 2));
+    this.board[index] = null;
+    this.profile.coins += value;
+    this.changed();
+    return { ok: true, value, item };
+  }
+
+  buyEnergy(): ActionResult {
+    this.syncEnergy();
+    if (this.profile.energy >= this.energyCap) return this.fail("Энергия уже полная");
+    if (this.profile.coins < 20) return this.fail("Нужно 20 монет");
+    this.profile.coins -= 20;
+    this.profile.energy = Math.min(this.energyCap, this.profile.energy + 30);
+    if (this.profile.energy >= this.energyCap) this.profile.energyAt = Date.now();
+    this.changed();
+    return { ok: true };
+  }
+
+  shuffleBoard(free = false): ActionResult {
+    if (!free) {
+      if (this.profile.boosters.shuffle < 1) return this.fail("Нет перетасовок");
+      this.profile.boosters.shuffle--;
+    }
+    const items = this.board.filter((item): item is BoardItem => Boolean(item));
+    const positions = this.board.map((_, index) => index);
+    for (let i = positions.length - 1; i > 0; i--) {
+      const j = Math.floor(this.random() * (i + 1));
+      [positions[i], positions[j]] = [positions[j], positions[i]];
+    }
+    this.board.fill(null);
+    items.forEach((item, i) => { this.board[positions[i]] = item; });
+    this.emit("swap", { shuffle: true });
+    this.changed();
+    return { ok: true };
+  }
+
+  claimDaily(): ActionResult {
+    const today = new Date().toISOString().slice(0, 10);
+    if (this.profile.daily.lastClaim === today) return this.fail("Сегодняшний подарок уже получен");
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    this.profile.daily.streak = this.profile.daily.lastClaim === yesterday ? this.profile.daily.streak + 1 : 1;
+    this.profile.daily.lastClaim = today;
+    const reward = DATA.daily[(this.profile.daily.streak - 1) % DATA.daily.length];
+    if (reward.coins) this.profile.coins += reward.coins;
+    if (reward.energy) this.profile.energy = Math.min(this.energyCap, this.profile.energy + reward.energy);
+    if (reward.booster) this.profile.boosters[reward.booster as "hammer" | "rainbow"] += reward.amount ?? 1;
+    this.changed();
+    return { ok: true, reward };
+  }
+
+  private addXp(amount: number): void {
+    this.profile.xp += amount;
+    let threshold = 80 + (this.profile.level - 1) * 45;
+    while (this.profile.xp >= threshold) {
+      this.profile.xp -= threshold;
+      this.profile.level++;
+      this.profile.coins += 10 + this.profile.level * 2;
+      this.profile.energy = Math.min(this.energyCap, this.profile.energy + 15);
+      this.emit("level", { level: this.profile.level });
+      threshold = 80 + (this.profile.level - 1) * 45;
+    }
+  }
+
+  private afterProgress(): void {
+    this.checkAchievements();
+    this.changed();
+  }
+
+  private checkAchievements(): void {
+    DATA.achievements.forEach((achievement) => {
+      const id = String(achievement.id);
+      if (this.profile.achievements.includes(id)) return;
+      const value = achievement.stat === "level" ? this.profile.level : Number(this.profile.stats[achievement.stat as keyof GameProfile["stats"]]);
+      if (value >= Number(achievement.target)) {
+        this.profile.achievements.push(id);
+        this.profile.coins += Number(achievement.coins);
+        this.emit("achievement", { achievement });
+      }
+    });
+  }
+
+  markStorySeen(id: string): void {
+    if (!this.profile.storySeen.includes(id)) {
+      this.profile.storySeen.push(id);
+      this.changed();
+    }
+  }
+
+  setSetting<K extends keyof GameProfile["settings"]>(key: K, value: GameProfile["settings"][K]): void {
+    this.profile.settings[key] = value;
+    this.changed();
+  }
+
+  private fail(reason: string): ActionResult {
+    this.emit("error", { reason });
+    return { ok: false, reason };
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "bg-observatory",
+  "promptVersion": 1,
+  "prompt": "Paint one continuous full-bleed landscape environment for a premium cozy cat merge game. An old mountaintop observatory interior at night, huge brass telescope, rotating open dome revealing stars and rainy clouds, celestial charts without writing, glowing orrery, wooden floor and violet magical instruments. Hand-painted rounded 3D casual-game aesthetic, deep blue and violet with golden starlight, breathtaking but cozy. Entire canvas painted edge-to-edge, no animals, no people, no UI, no placeholder panels, no text, no letters, no logos, no borders.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\bg-observatory.jfif",
+  "createdAt": "2026-11-24T23:33:27.014Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1376,
+    768
+  ],
+  "processed": "C:\\Projects\\YandexGames\\simple\\assets\\resources\\textures\\backgrounds\\bg-observatory.jpg",
+  "processedSize": [
+    1380,
+    560
+  ],
+  "processing": "composition crop (0, 88, 1376, 646), Lanczos resize, progressive JPEG quality 91",
+  "accepted": true,
+  "visualCheck": "Accepted full-bleed scene; no unintended characters, placeholders, text, or border."
+}

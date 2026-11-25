@@ -1,0 +1,22 @@
+{
+  "id": "icon-heart",
+  "promptVersion": 1,
+  "prompt": "Create one single heart-shaped game UI icon for a cozy cat merge game. A simple rounded raspberry-red heart symbol, puffy soft 3D hand-painted casual-game style, subtle warm highlight, bold clean silhouette readable at very small size, centered on a pure solid white background with generous empty margin. One heart only, absolutely no fruit, no raspberry, no leaves, no stem, no cat, no letters, no text, no border, no cast shadow.",
+  "references": [],
+  "mode": "Создание изображений",
+  "aspectRatio": "default UI setting (not changed)",
+  "original": "C:\\Projects\\YandexGames\\simple\\assets-src\\generated\\icon-heart.jfif",
+  "createdAt": "2026-11-24T23:32:09.935Z",
+  "originalFormat": "JPEG",
+  "originalSize": [
+    1408,
+    768
+  ],
+  "processed": "C:\\Projects\\YandexGames\\simple\\assets\\resources\\textures\\ui\\ui2-1.png",
+  "processedSize": [
+    256,
+    256
+  ],
+  "processing": "edge-connected near-white background removal, largest foreground component, edge color decontamination, premultiplied-alpha export",
+  "foregroundComponentArea": 131692
+}

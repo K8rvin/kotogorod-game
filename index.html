@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#111a2c" />
+  <meta name="description" content="Котогород — уютная игра о слиянии предметов, добрых историях и городе, который загорается от заботы." />
+  <title>Котогород — зажги свой первый огонёк</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='16' width='64' height='64' fill='%23182435'/%3E%3Cpath d='M15 29L12 10l16 10M49 29l3-19-16 10' fill='%23e8a15f'/%3E%3Ccircle cx='32' cy='35' r='21' fill='%23f1b978'/%3E%3Ccircle cx='24' cy='33' r='2.5' fill='%23222b3b'/%3E%3Ccircle cx='40' cy='33' r='2.5' fill='%23222b3b'/%3E%3Cpath d='M28 42q4 4 8 0' fill='none' stroke='%23222b3b' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <div id="boot" role="status" aria-live="polite">
+    <div class="boot-lamp"><span></span></div>
+    <div class="boot-cat"><i></i><i></i><b></b></div>
+    <div class="boot-title">КОТОГОРОД</div>
+    <div class="boot-caption">Зажигаем первый огонёк…</div>
+    <div class="boot-track"><div id="boot-progress"></div></div>
+  </div>
+  <div id="game" aria-label="Игровое поле Котогорода"></div>
+  <div id="interface" class="hidden">
+    <header id="topbar">
+      <button id="brand" class="brand" aria-label="Открыть карту города"><span class="brand-mark">К</span><span>КОТОГОРОД</span></button>
+      <div class="resources">
+        <button id="energy-resource" class="resource energy" title="Энергия"><span class="resource-icon">ϟ</span><strong id="energy-value">80</strong><small id="energy-timer"></small></button>
+        <div class="resource" title="Звёзды для реставрации"><span class="resource-icon star">★</span><strong id="stars-value">0</strong></div>
+        <div class="resource" title="Монеты"><span class="resource-icon coin">●</span><strong id="coins-value">0</strong></div>
+        <div class="resource keys" title="Ключи районов"><span class="resource-icon">◆</span><strong id="keys-value">0</strong></div>
+      </div>
+      <button id="settings-button" class="round-button" aria-label="Настройки">⚙</button>
+    </header>
+
+    <section id="district-card" class="glass-card">
+      <div><small id="chapter-label">Глава 1</small><h1 id="district-name">Дождливый переулок</h1><p id="district-story"></p></div>
+      <div class="district-progress"><span id="district-progress-text">0 / 8</span><div class="progress-track"><i id="district-progress-fill"></i></div></div>
+      <button id="restore-button" class="primary-button"><span id="restore-label">Укрыть коробку</span><strong id="restore-cost">3 ★</strong></button>
+    </section>
+
+    <aside id="orders-panel" class="glass-card" aria-label="Заказы жителей">
+      <div class="panel-heading"><div><small>ПРОСЬБЫ ЖИТЕЛЕЙ</small><h2>Помочь — значит услышать</h2></div><button id="close-orders" class="round-button" aria-label="Закрыть заказы">×</button></div>
+      <div id="orders-list"></div>
+      <div id="chest-card" class="chest-card"><span class="chest-icon">▣</span><div><strong id="chest-title">Сундук сюрпризов</strong><small id="chest-description">Ещё 3 заказа</small></div><button id="chest-button" disabled>Ждём</button></div>
+    </aside>
+
+    <div id="coach" class="coach hidden"><div id="coach-cat"></div><div><strong id="coach-name">Август</strong><p id="coach-text"></p></div><button id="coach-next" aria-label="Продолжить">→</button></div>
+    <div id="item-hint" class="item-hint hidden"></div>
+    <div id="generator-bar" class="glass-card"></div>
+    <div id="selection-tools" class="hidden"><button id="store-button">В сумку</button><button id="sell-button">Продать</button></div>
+
+    <nav id="bottom-nav">
+      <button data-panel="map"><span>⌂</span>Город</button>
+      <button data-panel="orders" id="orders-nav"><span>♡</span>Заказы<i id="orders-ready-dot"></i></button>
+      <button data-panel="modes"><span>✦</span>Режимы</button>
+      <button data-panel="cats"><span>♧</span>Жители</button>
+      <button data-panel="more"><span>•••</span>Ещё</button>
+    </nav>
+  </div>
+  <div id="drag-layer" aria-hidden="true"></div>
+  <div id="toast-layer" aria-live="polite"></div>
+  <div id="modal-layer" class="hidden" role="dialog" aria-modal="true"><div id="modal-backdrop"></div><section id="modal"></section></div>
+  <div id="fade-layer"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
